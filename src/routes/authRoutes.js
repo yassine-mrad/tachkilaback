@@ -52,10 +52,10 @@ router.put('/updateuser',async (req,res)=>{
 });
 router.post('/user',async (req,res)=>{
     
-    const {userId} = req.body;
+    const {userid} = req.body;
     try{
         
-        const user = await User.findById(userId);
+        const user = await User.findById(userid);
     
     
     return res.json({messsage:'this is the messages',status:200,data:user})

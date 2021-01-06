@@ -11,7 +11,7 @@ router.use(requireAuth);
 router.get('/parties',async (req,res)=>{
     const parties = await Partie.find();
     
-    res.send(parties);
+    res.json(parties);
 });
 router.post('/partie',async (req,res)=>{
    const  {userId,titre,nombre,niveau,dateestime,localisation,description,tranchedage,membre} = req.body;
