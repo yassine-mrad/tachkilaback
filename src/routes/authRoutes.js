@@ -38,17 +38,22 @@ router.post('/signin',async (req,res) => {
     }
 });
 
-router.put('/updateuser',async (req,res)=>{
-    const {nom,prenom,email,motdepasse,datenaissance,localisation,telephone,profession,niveau,userid} =req.body;
+router.post('/updateuser',async (req,res)=>{
+    const {nom,prenom,email,datenaissance,localisation,telephone,profession,niveau,userid} =req.body;
    
     try{
-         await User.updateOne({_id:userid},{nom,prenom,email,motdepasse,datenaissance,localisation,telephone,profession,niveau});
+         await User.updateOne({_id:userid},{nom,prenom,email,datenaissance,localisation,telephone,profession,niveau});
     
         res.json({messsage:'updated',status:200})
     }catch(err){
        return res.status(423).send(err.message);
     }
     
+});
+router.get('/users',async (req,res)=>{
+    const users = await User.find();
+    
+    res.json(users);
 });
 router.post('/user',async (req,res)=>{
     
@@ -62,6 +67,18 @@ router.post('/user',async (req,res)=>{
     }catch(err){
         return res.status(422).send(err.message);
      }
+});
+
+router.post('/userName',async (req,res)=>{
+    
+    const {_id} = req.body;
+    console.log(req.body);
+ 
+        
+        const user = await User.findById(_id);
+    
+    
+     res.json(user)
 });
 
 module.exports = router;

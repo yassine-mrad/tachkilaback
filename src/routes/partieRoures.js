@@ -13,6 +13,21 @@ router.get('/parties',async (req,res)=>{
     
     res.json(parties);
 });
+
+router.post('/mesParties',async (req,res)=>{
+    const {userId}= req.body
+    console.log("us",userId)
+    const parties = await Partie.find({userId});
+    
+    res.json(parties);
+});
+router.post('/partiesRejoints',async (req,res)=>{
+    const {userId}= req.body
+    console.log("us",userId)
+    const parties = await Partie.find({userId});
+    
+    res.json(parties);
+});
 router.post('/partie',async (req,res)=>{
    const  {userId,titre,nombre,niveau,dateestime,localisation,description,tranchedage,membre} = req.body;
     try{
@@ -24,6 +39,7 @@ router.post('/partie',async (req,res)=>{
      }
 
 });
+
 router.put('/updatepartie',async (req,res)=>{
     const {userId,titre,nombre,niveau,dateestime,localisation,description,tranchedage,membre,idpartie} =req.body;
    
@@ -35,6 +51,49 @@ router.put('/updatepartie',async (req,res)=>{
        return res.status(423).send(err.message);
     }
     
+});
+
+router.post('/membrePartie',async (req,res)=>{
+    const {_id}=req.body
+   
+    try{
+        const partie= await Partie.find({_id},'membre');
+        console.log("partie",partie)
+        res.json(partie)
+    }catch(err){
+       return res.status(423).send(err.message);
+    }
+    
+});
+
+router.delete('/deletePartie',async (req,res)=>{
+    const {_id}=req.body
+   
+    try{
+        Partie.deleteOne({_id}).then( ()=>{
+            console.log("succees")
+        
+        })
+        
+    }catch(err){
+       return res.status(423).send(err.message);
+    }
+    
+});
+
+router.put('/ajouterMembre',async (req,res)=>{
+    const {idpartie, userid} =req.body;
+
+    try{
+         await Partie.updateOne({_id:idpartie},{$addToSet:{membre:userid}}).then(()=>{
+             console.log("updated")
+         })
+
+        res.json({messsage:'updated'})
+    }catch(err){
+       return res.status(423).send(err.message);
+    }
+
 });
 
 module.exports = router;
