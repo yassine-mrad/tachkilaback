@@ -86,6 +86,34 @@ router.put('/ajouterMembre',async (req,res)=>{
 
     try{
          await Partie.updateOne({_id:idpartie},{$addToSet:{membre:userid}}).then(()=>{
+             
+         })
+         const partie=await Partie.findById(idpartie);
+         const  {membre} = partie;
+        console.log(membre);
+        res.json({messsage:'updated'})
+    }catch(err){
+       return res.status(423).send(err.message);
+    }
+
+});
+router.put('/effacerMembre',async (req,res)=>{
+    const {idpartie, userid} =req.body;
+
+    try{
+        const partie=await Partie.findById(idpartie);
+        const tab=partie.membre
+        tab.filter(e=>e!==userid);
+        const meb=[];
+        for(let i=0;i<tab.length;i++){
+            if(tab[i]!=userid){
+                meb.push(tab[i])
+            }
+        }
+        console.log(meb);
+        
+
+         await Partie.updateOne({_id:idpartie},{membre:meb}).then(()=>{
              console.log("updated")
          })
 

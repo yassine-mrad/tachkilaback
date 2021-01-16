@@ -62,6 +62,23 @@ app.post('/messages', (req,res)=>{
        
     
 });
+io.on("connection", socket => {
+    console.log("a user connected :D");
+    socket.on("message",async  (msg) => {
+        console.log(msg.messages[0].user.name);
+            const message = new Message({userId:msg.user,partieId:msg.partieId,contenue:msg.messages[0].text,nom:msg.messages[0].user.name});
+            console.log("message instance",message)
+            io.emit(msg.partieId.toString(), msg.messages);
+            await message.save();
+     
+       
+        
+
+
+      console.log(msg);
+      
+    });
+  });
 //create new message
 app.post('/message',async (req,res)=>{
     
